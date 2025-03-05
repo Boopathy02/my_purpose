@@ -17,12 +17,9 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          SECRET_NAME: gmail/notification-credentials  # Replace with your secret name
+          SECRET_NAME: gmail/notification-credentials
         run: |
-          # Install boto3 (AWS SDK for Python)
           pip install boto3
-
-          # Fetch the secret from AWS Secrets Manager
           python3 <<EOF
           import boto3
           import json
@@ -67,7 +64,7 @@ jobs:
 
           email_user = '${{ env.EMAIL_USER }}'
           email_password = '${{ env.EMAIL_PASSWORD }}'
-          recipient = nboopathy02@gmail.com  # Send to yourself, or replace with another email
+          recipient = email_user  # Send to yourself, or replace with another email
 
           msg = MIMEText('Your pipeline succeeded!')
           msg['Subject'] = 'Pipeline Success'
@@ -93,7 +90,7 @@ jobs:
 
           email_user = '${{ env.EMAIL_USER }}'
           email_password = '${{ env.EMAIL_PASSWORD }}'
-          recipient = nboopathy02@gmail.com  # Send to yourself, or replace with another email
+          recipient = email_user  # Send to yourself, or replace with another email
 
           msg = MIMEText('Your pipeline failed!')
           msg['Subject'] = 'Pipeline Failure'
