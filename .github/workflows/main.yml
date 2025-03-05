@@ -64,7 +64,7 @@ jobs:
 
           email_user = '${{ env.EMAIL_USER }}'
           email_password = '${{ env.EMAIL_PASSWORD }}'
-          recipient = email_user  # Send to yo  yourself, or replace with another email
+          recipient = email_user  # Send to yourself, or replace with another email
 
           msg = MIMEText('Your pipeline succeeded!')
           msg['Subject'] = 'Pipeline Success'
