@@ -1,0 +1,44 @@
+name: Debug AWS Secrets Manager Integration
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch email credentials
+        id: fetch-secrets
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SECRET_NAME: ${{ secrets.AWS_SECRET_NAME }}
+        run: |
+          # Install boto3 (AWS SDK for Python)
+          pip install boto3
+
+          # Fetch the secret from AWS Secrets Manager
+          import boto3
+          import json
+          import os
+
+          client = boto3.client(
+              'secretsmanager',
+              aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+              aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'],
+              region_name=os.environ['AWS_REGION']
+          )
+
+          try:
+              response = client.get_secret_value(SecretId=os.environ['SECRET_NAME'])
+              secret = json.loads(response['SecretString'])
+              print("Secret fetched successfully!")
+              print(f"EMAIL_USER: {secret['EMAIL_USER']}")
+              print(f"EMAIL_PASSWORD: {secret['EMAIL_PASSWORD']}")
+          except Exception as e:
+              print(f"Error fetching secret: {e}")
+              exit(1)
